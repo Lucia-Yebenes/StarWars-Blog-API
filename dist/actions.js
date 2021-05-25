@@ -35,13 +35,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
-exports.createPlanets = exports.getPlanets = exports.createCharacter = exports.getCharacter = exports.getUsers = exports.createUser = void 0;
+exports.createPlanets = exports.getOnePlanets = exports.getPlanets = exports.createCharacter = exports.getOneCharacter = exports.getCharacter = exports.getUsers = exports.createTokend = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
 var utils_1 = require("./utils");
 var Character_1 = require("./entities/Character");
 var Planets_1 = require("./entities/Planets");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
     return __generator(this, function (_a) {
@@ -71,6 +75,28 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.createUser = createUser;
+var createTokend = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userRepo, user, token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // important validations to avoid ambiguos errors, the client needs to understand what went wrong
+                if (!req.body.email)
+                    throw new utils_1.Exception("Please specify an email email");
+                if (!req.body.password)
+                    throw new utils_1.Exception("Please specify an email password");
+                userRepo = typeorm_1.getRepository(Users_1.Users);
+                return [4 /*yield*/, userRepo.findOne({ where: { email: req.body.email, password: req.body.password } })];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    throw new utils_1.Exception("Invalid email or password");
+                token = jsonwebtoken_1["default"].sign({ user: user }, process.env.JWT_KEY);
+                return [2 /*return*/, res.json({ user: user, token: token })];
+        }
+    });
+}); };
+exports.createTokend = createTokend;
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
     return __generator(this, function (_a) {
@@ -98,6 +124,19 @@ var getCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0
     });
 }); };
 exports.getCharacter = getCharacter;
+var getOneCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var characters;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).findOne(req.params.id)];
+            case 1:
+                characters = _a.sent();
+                console.log("ruta de un personajes");
+                return [2 /*return*/, res.json(characters)];
+        }
+    });
+}); };
+exports.getOneCharacter = getOneCharacter;
 // POST Character 
 var createCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var characterRepo, character, newCharacter, results;
@@ -152,6 +191,20 @@ var getPlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.getPlanets = getPlanets;
+//GET Planets
+var getOnePlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var planets;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).findOne(req.params.id)];
+            case 1:
+                planets = _a.sent();
+                console.log("ruta traigo planetas");
+                return [2 /*return*/, res.json(planets)];
+        }
+    });
+}); };
+exports.getOnePlanets = getOnePlanets;
 // POST Character 
 var createPlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var planetsRepo, planets, newPlanets, results;

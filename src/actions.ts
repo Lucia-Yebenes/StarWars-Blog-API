@@ -4,6 +4,7 @@ import { Users } from './entities/Users'
 import { Exception } from './utils'
 import { Character } from './entities/Character'
 import { Planets } from './entities/Planets'
+import jwt from "jsonwebtoken"
 
 export const createUser = async (req: Request, res:Response): Promise<Response> =>{
 
@@ -23,6 +24,22 @@ export const createUser = async (req: Request, res:Response): Promise<Response> 
 	return res.json(results);
 }
 
+export const createTokend = async (req: Request, res:Response): Promise<Response> =>{
+
+	// important validations to avoid ambiguos errors, the client needs to understand what went wrong
+	if(!req.body.email) throw new Exception("Please specify an email email")
+	if(!req.body.password) throw new Exception("Please specify an email password")
+
+	const userRepo = getRepository(Users)
+	// fetch for any user with this email
+	const user = await userRepo.findOne({ where: {email: req.body.email , password: req.body.password}})
+	if(!user) throw new Exception("Invalid email or password")
+
+	const token = jwt.sign({ user }, process.env.JWT_KEY as string,);
+
+	return res.json({ user, token });
+}
+
 export const getUsers = async (req: Request, res: Response): Promise<Response> =>{
 		const users = await getRepository(Users).find();
 		return res.json(users);
@@ -33,6 +50,12 @@ export const getUsers = async (req: Request, res: Response): Promise<Response> =
 export const getCharacter = async (req: Request, res: Response): Promise<Response> =>{
         const characters = await getRepository(Character).find();
         console.log("ruta personajes")
+		return res.json(characters);
+}
+
+export const getOneCharacter = async (req: Request, res: Response): Promise<Response> =>{
+        const characters = await getRepository(Character).findOne(req.params.id);
+        console.log("ruta de un personajes")
 		return res.json(characters);
 }
 
@@ -64,6 +87,13 @@ export const createCharacter = async (req: Request, res:Response): Promise<Respo
 //GET Planets
 export const getPlanets = async (req: Request, res: Response): Promise<Response> =>{
         const planets = await getRepository(Planets).find();
+        console.log("ruta traigo planetas")
+		return res.json(planets);
+}
+
+//GET Planets
+export const getOnePlanets = async (req: Request, res: Response): Promise<Response> =>{
+        const planets = await getRepository(Planets).findOne(req.params.id);
         console.log("ruta traigo planetas")
 		return res.json(planets);
 }

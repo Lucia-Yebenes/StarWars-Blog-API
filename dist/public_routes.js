@@ -13,10 +13,13 @@ var actions_1 = require("./actions");
 var router = express_1.Router();
 // signup route, creates a new user in the DB
 router.post('/user', utils_1.safe(actions_1.createUser));
+router.post('/login', utils_1.safe(actions_1.createTokend));
 // CHARACTER
 router.get('/character', utils_1.safe(actions_1.getCharacter));
 router.post('/character', utils_1.safe(actions_1.createCharacter));
+router.get('/character:id', utils_1.safe(actions_1.getOneCharacter));
 //PLANETS
 router.get('/planets', utils_1.safe(actions_1.getPlanets));
 router.post('/planets', utils_1.safe(actions_1.createPlanets));
+router.get('/planets:id', utils_1.safe(actions_1.getOnePlanets));
 exports["default"] = router;
