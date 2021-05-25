@@ -65,7 +65,7 @@ var Character = /** @class */ (function (_super) {
     ], Character.prototype, "eyeColor");
     __decorate([
         typeorm_1.Column(),
-        __metadata("design:type", Number)
+        __metadata("design:type", String)
     ], Character.prototype, "birthYear");
     __decorate([
         typeorm_1.Column(),

@@ -22,9 +22,6 @@ export class Planets extends BaseEntity {
     @Column()
     terrain: string;
     @Column()
-    surfaceWater: string;
-    @Column()
-    created: number;
-    @Column()
-    edited: number;
+    surfaceWater: string
+    
 }

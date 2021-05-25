@@ -36,10 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getUsers = exports.createUser = void 0;
+exports.createPlanets = exports.getPlanets = exports.createCharacter = exports.getCharacter = exports.getUsers = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
 var utils_1 = require("./utils");
+var Character_1 = require("./entities/Character");
+var Planets_1 = require("./entities/Planets");
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
     return __generator(this, function (_a) {
@@ -81,3 +83,113 @@ var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 exports.getUsers = getUsers;
+// CHARACTER
+//GET Character
+var getCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var characters;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).find()];
+            case 1:
+                characters = _a.sent();
+                console.log("ruta personajes");
+                return [2 /*return*/, res.json(characters)];
+        }
+    });
+}); };
+exports.getCharacter = getCharacter;
+// POST Character 
+var createCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var characterRepo, character, newCharacter, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // important validations para que ingresen todos los campos 
+                if (!req.body.name)
+                    throw new utils_1.Exception("Please provide a name");
+                if (!req.body.height)
+                    throw new utils_1.Exception("Please provide a height");
+                if (!req.body.mass)
+                    throw new utils_1.Exception("Please provide an mass");
+                if (!req.body.hairColor)
+                    throw new utils_1.Exception("Please provide a hairColor");
+                if (!req.body.skinColor)
+                    throw new utils_1.Exception("Please provide a skinColor");
+                if (!req.body.eyeColor)
+                    throw new utils_1.Exception("Please provide a eyeColor");
+                if (!req.body.birthYear)
+                    throw new utils_1.Exception("Please provide a birthYear");
+                if (!req.body.gender)
+                    throw new utils_1.Exception("Please provide a gender");
+                characterRepo = typeorm_1.getRepository(Character_1.Character);
+                return [4 /*yield*/, characterRepo.findOne({ where: { name: req.body.name } })]; //para que no se repitan
+            case 1:
+                character = _a.sent() //para que no se repitan
+                ;
+                if (character)
+                    throw new utils_1.Exception("character already exists with this name");
+                newCharacter = typeorm_1.getRepository(Character_1.Character).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).save(newCharacter)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createCharacter = createCharacter;
+//PLANETS
+//GET Planets
+var getPlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var planets;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).find()];
+            case 1:
+                planets = _a.sent();
+                console.log("ruta traigo planetas");
+                return [2 /*return*/, res.json(planets)];
+        }
+    });
+}); };
+exports.getPlanets = getPlanets;
+// POST Character 
+var createPlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var planetsRepo, planets, newPlanets, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // important validations para que ingresen todos los campos 
+                if (!req.body.name)
+                    throw new utils_1.Exception("Please provide a name");
+                if (!req.body.diameter)
+                    throw new utils_1.Exception("Please provide a diameter");
+                if (!req.body.rotation)
+                    throw new utils_1.Exception("Please provide an rotation");
+                if (!req.body.orbital)
+                    throw new utils_1.Exception("Please provide a orbital");
+                if (!req.body.gravity)
+                    throw new utils_1.Exception("Please provide a gravity");
+                if (!req.body.population)
+                    throw new utils_1.Exception("Please provide a population");
+                if (!req.body.climate)
+                    throw new utils_1.Exception("Please provide a climate");
+                if (!req.body.terrain)
+                    throw new utils_1.Exception("Please provide a terrain");
+                if (!req.body.surfaceWater)
+                    throw new utils_1.Exception("Please provide a surfaceWater");
+                planetsRepo = typeorm_1.getRepository(Planets_1.Planets);
+                return [4 /*yield*/, planetsRepo.findOne({ where: { name: req.body.name } })]; //para que no se repitan
+            case 1:
+                planets = _a.sent() //para que no se repitan
+                ;
+                if (planets)
+                    throw new utils_1.Exception("character already exists with this name");
+                newPlanets = typeorm_1.getRepository(Planets_1.Planets).create(req.body);
+                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).save(newPlanets)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.createPlanets = createPlanets;

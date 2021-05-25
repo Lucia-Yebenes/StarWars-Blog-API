@@ -19,7 +19,7 @@ export class Character extends BaseEntity {
     @Column()
     eyeColor: string;
     @Column()
-    birthYear: number;
+    birthYear: string;
     @Column()
     gender: string;
 }

@@ -24,60 +24,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 exports.__esModule = true;
-exports.Planets = void 0;
+exports.FavPlanets = void 0;
 var typeorm_1 = require("typeorm");
-var Planets = /** @class */ (function (_super) {
-    __extends(Planets, _super);
-    function Planets() {
+var FavPlanets = /** @class */ (function (_super) {
+    __extends(FavPlanets, _super);
+    function FavPlanets() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
-    ], Planets.prototype, "id");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Planets.prototype, "name");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Planets.prototype, "img");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", Number)
-    ], Planets.prototype, "diameter");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Planets.prototype, "rotation");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", Number)
-    ], Planets.prototype, "orbital");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Planets.prototype, "gravity");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", Number)
-    ], Planets.prototype, "population");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Planets.prototype, "climate");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Planets.prototype, "terrain");
-    __decorate([
-        typeorm_1.Column(),
-        __metadata("design:type", String)
-    ], Planets.prototype, "surfaceWater");
-    Planets = __decorate([
+    ], FavPlanets.prototype, "id");
+    FavPlanets = __decorate([
         typeorm_1.Entity()
-    ], Planets);
-    return Planets;
+    ], FavPlanets);
+    return FavPlanets;
 }(typeorm_1.BaseEntity));
-exports.Planets = Planets;
+exports.FavPlanets = FavPlanets;
