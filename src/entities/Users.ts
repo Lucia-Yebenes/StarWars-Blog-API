@@ -18,8 +18,5 @@ export class Users extends BaseEntity{
   email: string;
 
   @Column()
-  password: string;
-
-  
-  
+  password: string;  
 }
