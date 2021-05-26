@@ -26,6 +26,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 exports.__esModule = true;
 exports.Planets = void 0;
 var typeorm_1 = require("typeorm");
+var FavPlanets_1 = require("./FavPlanets");
 var Planets = /** @class */ (function (_super) {
     __extends(Planets, _super);
     function Planets() {
@@ -75,6 +76,10 @@ var Planets = /** @class */ (function (_super) {
         typeorm_1.Column(),
         __metadata("design:type", String)
     ], Planets.prototype, "surfaceWater");
+    __decorate([
+        typeorm_1.OneToMany(function () { return FavPlanets_1.FavPlanets; }, function (favPlanets) { return favPlanets.planets; }),
+        __metadata("design:type", Array)
+    ], Planets.prototype, "favPlanetss");
     Planets = __decorate([
         typeorm_1.Entity()
     ], Planets);

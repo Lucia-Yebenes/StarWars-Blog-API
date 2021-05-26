@@ -30,5 +30,6 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
 }
 
 router.get('/user', verifyToken, safe(actions.getUsers));
-
+router.post('/user/favourite/character/:id', verifyToken, safe(actions.addFavCharacter));
+router.post('/user/favourite/planet/:id', verifyToken, safe(actions.addFavPlanets));
 export default router;

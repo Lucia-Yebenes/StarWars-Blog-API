@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm";
+import {FavCharacter} from "./FavCharacter"
 
 @Entity()
 export class Character extends BaseEntity {
@@ -22,4 +23,7 @@ export class Character extends BaseEntity {
     birthYear: string;
     @Column()
     gender: string;
+
+    @OneToMany(() => FavCharacter, favCharacter => favCharacter.character)
+    favCharacters: FavCharacter[];
 }

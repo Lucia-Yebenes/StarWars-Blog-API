@@ -38,15 +38,13 @@ var FavPlanets = /** @class */ (function (_super) {
         __metadata("design:type", Number)
     ], FavPlanets.prototype, "id");
     __decorate([
-        typeorm_1.ManyToMany(function () { return Planets_1.Planets; }),
-        typeorm_1.JoinTable(),
-        __metadata("design:type", Array)
-    ], FavPlanets.prototype, "planets");
-    __decorate([
-        typeorm_1.ManyToMany(function () { return Users_1.Users; }),
-        typeorm_1.JoinTable(),
-        __metadata("design:type", Array)
+        typeorm_1.ManyToOne(function () { return Users_1.Users; }, function (users) { return users.favPlanetss; }),
+        __metadata("design:type", Users_1.Users)
     ], FavPlanets.prototype, "users");
+    __decorate([
+        typeorm_1.ManyToOne(function () { return Planets_1.Planets; }, function (planets) { return planets.favPlanetss; }),
+        __metadata("design:type", Planets_1.Planets)
+    ], FavPlanets.prototype, "planets");
     FavPlanets = __decorate([
         typeorm_1.Entity()
     ], FavPlanets);

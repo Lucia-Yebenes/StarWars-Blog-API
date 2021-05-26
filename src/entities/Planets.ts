@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm";
+import { FavPlanets } from "./FavPlanets";
 @Entity()
 export class Planets extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -23,5 +24,8 @@ export class Planets extends BaseEntity {
     terrain: string;
     @Column()
     surfaceWater: string
+    
+    @OneToMany(() => FavPlanets, favPlanets => favPlanets.planets)
+    favPlanetss: FavPlanets[];
     
 }

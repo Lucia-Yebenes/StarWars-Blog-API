@@ -38,15 +38,13 @@ var FavCharacter = /** @class */ (function (_super) {
         __metadata("design:type", Number)
     ], FavCharacter.prototype, "id");
     __decorate([
-        typeorm_1.ManyToMany(function () { return Character_1.Character; }),
-        typeorm_1.JoinTable(),
-        __metadata("design:type", Array)
-    ], FavCharacter.prototype, "character");
-    __decorate([
-        typeorm_1.ManyToMany(function () { return Users_1.Users; }),
-        typeorm_1.JoinTable(),
-        __metadata("design:type", Array)
+        typeorm_1.ManyToOne(function () { return Users_1.Users; }, function (users) { return users.favCharacters; }),
+        __metadata("design:type", Users_1.Users)
     ], FavCharacter.prototype, "users");
+    __decorate([
+        typeorm_1.ManyToOne(function () { return Character_1.Character; }, function (character) { return character.favCharacters; }),
+        __metadata("design:type", Character_1.Character)
+    ], FavCharacter.prototype, "character");
     FavCharacter = __decorate([
         typeorm_1.Entity()
     ], FavCharacter);

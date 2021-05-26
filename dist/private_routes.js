@@ -50,4 +50,6 @@ var verifyToken = function (req, res, next) {
     next();
 };
 router.get('/user', verifyToken, utils_1.safe(actions.getUsers));
+router.post('/user/favourite/character/:id', verifyToken, utils_1.safe(actions.addFavCharacter));
+router.post('/user/favourite/planet/:id', verifyToken, utils_1.safe(actions.addFavPlanets));
 exports["default"] = router;

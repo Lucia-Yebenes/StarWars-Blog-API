@@ -1,10 +1,12 @@
 import { Request, Response } from 'express'
-import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de la base de datos asociada al objeto
+import { getRepository, ObjectLiteral } from 'typeorm'  // getRepository"  traer una tabla de la base de datos asociada al objeto
 import { Users } from './entities/Users'
 import { Exception } from './utils'
 import { Character } from './entities/Character'
 import { Planets } from './entities/Planets'
 import jwt from "jsonwebtoken"
+import { FavCharacter } from './entities/FavCharacter'
+import { FavPlanets } from './entities/FavPlanets'
 
 export const createUser = async (req: Request, res:Response): Promise<Response> =>{
 
@@ -41,7 +43,9 @@ export const createTokend = async (req: Request, res:Response): Promise<Response
 }
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> =>{
-		const users = await getRepository(Users).find();
+    const userID = (req.user as ObjectLiteral).user.id; 
+    console.log(userID)
+		const users = await getRepository(Users).findOne(userID);
 		return res.json(users);
 }
 // CHARACTER
@@ -122,3 +126,31 @@ export const createPlanets = async (req: Request, res:Response): Promise<Respons
 	return res.json(results);
 }
 
+// ADD FAVOURITE CHARACTER
+
+export const addFavCharacter = async (req: Request, res: Response): Promise<Response> => {
+    const user = (req.user as ObjectLiteral).user; //traigo usuario 
+    const character = await getRepository(Character).findOne(req.params.id) //busco en el repo los persinajes y me traigo el q coincida con el id q le estoy pasando
+    if (!character) throw new Exception ("character not found") //si el personaje no exisete devolverr msj 
+    let newFavourite = new FavCharacter(); //traigo tabla 
+    newFavourite.users= user // asigno valor a la "columna"
+    newFavourite.character=character // asigno valor a la "columna"
+    console.log(user)
+    console.log(character)
+    
+    const results = await getRepository(FavCharacter).save(newFavourite);
+    return res.json(results); 
+}
+
+// ADD FAVOURITE PLANETS
+export const addFavPlanets = async (req: Request, res: Response): Promise<Response> => {
+    const user = (req.user as ObjectLiteral).user; //traigo usuario 
+    const planet = await getRepository(Planets).findOne(req.params.id) //busco en el repo los persinajes y me traigo el q coincida con el id q le estoy pasando
+    if (!planet) throw new Exception ("planets not found") //si el personaje no exisete devolverr msj 
+    let newFavouritePlanet = new FavPlanets(); //traigo tabla 
+    newFavouritePlanet.users= user // asigno valor a la "columna"
+    newFavouritePlanet.planets=planet // asigno valor a la "columna"
+    
+    const results = await getRepository(FavPlanets).save(newFavouritePlanet);
+    return res.json(results); 
+}

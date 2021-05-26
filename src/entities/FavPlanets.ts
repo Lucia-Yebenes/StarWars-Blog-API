@@ -1,5 +1,5 @@
 import {
-    Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToMany, JoinTable
+    Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne
 } from 'typeorm';
 import { Planets } from './Planets';
 import { Users } from './Users';
@@ -9,11 +9,10 @@ export class FavPlanets extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToMany(() => Planets)
-    @JoinTable()
-    planets: Planets[];
 
-    @ManyToMany(() => Users)
-    @JoinTable()
-    users: Users[];
+   @ManyToOne(() => Users, users => users.favPlanetss)
+    users: Users;
+
+    @ManyToOne(() => Planets, planets => planets.favPlanetss)
+    planets: Planets;
 }

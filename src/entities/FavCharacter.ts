@@ -1,5 +1,5 @@
 import {
-  Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToMany, JoinTable
+  Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne
 } from 'typeorm';
 import { Character } from './Character';
 import { Users } from './Users';
@@ -9,11 +9,9 @@ export class FavCharacter extends BaseEntity{
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => Character)
-    @JoinTable()
-    character: Character[];
+@ManyToOne(() => Users, users => users.favCharacters)
+    users: Users;
 
-@ManyToMany(() => Users)
-    @JoinTable()
-    users: Users[];
+@ManyToOne(() => Character, character => character.favCharacters)
+    character: Character;
 }

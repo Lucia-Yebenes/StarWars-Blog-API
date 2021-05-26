@@ -26,6 +26,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 exports.__esModule = true;
 exports.Character = void 0;
 var typeorm_1 = require("typeorm");
+var FavCharacter_1 = require("./FavCharacter");
 var Character = /** @class */ (function (_super) {
     __extends(Character, _super);
     function Character() {
@@ -71,6 +72,10 @@ var Character = /** @class */ (function (_super) {
         typeorm_1.Column(),
         __metadata("design:type", String)
     ], Character.prototype, "gender");
+    __decorate([
+        typeorm_1.OneToMany(function () { return FavCharacter_1.FavCharacter; }, function (favCharacter) { return favCharacter.character; }),
+        __metadata("design:type", Array)
+    ], Character.prototype, "favCharacters");
     Character = __decorate([
         typeorm_1.Entity()
     ], Character);

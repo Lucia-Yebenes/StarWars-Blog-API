@@ -39,13 +39,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createPlanets = exports.getOnePlanets = exports.getPlanets = exports.createCharacter = exports.getOneCharacter = exports.getCharacter = exports.getUsers = exports.createTokend = exports.createUser = void 0;
+exports.addFavPlanets = exports.addFavCharacter = exports.createPlanets = exports.getOnePlanets = exports.getPlanets = exports.createCharacter = exports.getOneCharacter = exports.getCharacter = exports.getUsers = exports.createTokend = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
 var utils_1 = require("./utils");
 var Character_1 = require("./entities/Character");
 var Planets_1 = require("./entities/Planets");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var FavCharacter_1 = require("./entities/FavCharacter");
+var FavPlanets_1 = require("./entities/FavPlanets");
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var userRepo, user, newUser, results;
     return __generator(this, function (_a) {
@@ -98,10 +100,13 @@ var createTokend = function (req, res) { return __awaiter(void 0, void 0, void 0
 }); };
 exports.createTokend = createTokend;
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var userID, users;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).find()];
+            case 0:
+                userID = req.user.user.id;
+                console.log(userID);
+                return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).findOne(userID)];
             case 1:
                 users = _a.sent();
                 return [2 /*return*/, res.json(users)];
@@ -246,3 +251,53 @@ var createPlanets = function (req, res) { return __awaiter(void 0, void 0, void 
     });
 }); };
 exports.createPlanets = createPlanets;
+// ADD FAVOURITE CHARACTER
+var addFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, character, newFavourite, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = req.user.user;
+                return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).findOne(req.params.id)]; //busco en el repo los persinajes y me traigo el q coincida con el id q le estoy pasando
+            case 1:
+                character = _a.sent() //busco en el repo los persinajes y me traigo el q coincida con el id q le estoy pasando
+                ;
+                if (!character)
+                    throw new utils_1.Exception("character not found"); //si el personaje no exisete devolverr msj 
+                newFavourite = new FavCharacter_1.FavCharacter();
+                newFavourite.users = user; // asigno valor a la "columna"
+                newFavourite.character = character; // asigno valor a la "columna"
+                console.log(user);
+                console.log(character);
+                return [4 /*yield*/, typeorm_1.getRepository(FavCharacter_1.FavCharacter).save(newFavourite)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.addFavCharacter = addFavCharacter;
+// ADD FAVOURITE PLANETS
+var addFavPlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, planet, newFavouritePlanet, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = req.user.user;
+                return [4 /*yield*/, typeorm_1.getRepository(Planets_1.Planets).findOne(req.params.id)]; //busco en el repo los persinajes y me traigo el q coincida con el id q le estoy pasando
+            case 1:
+                planet = _a.sent() //busco en el repo los persinajes y me traigo el q coincida con el id q le estoy pasando
+                ;
+                if (!planet)
+                    throw new utils_1.Exception("planets not found"); //si el personaje no exisete devolverr msj 
+                newFavouritePlanet = new FavPlanets_1.FavPlanets();
+                newFavouritePlanet.users = user; // asigno valor a la "columna"
+                newFavouritePlanet.planets = planet; // asigno valor a la "columna"
+                return [4 /*yield*/, typeorm_1.getRepository(FavPlanets_1.FavPlanets).save(newFavouritePlanet)];
+            case 2:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.addFavPlanets = addFavPlanets;
