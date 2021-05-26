@@ -154,3 +154,49 @@ export const addFavPlanets = async (req: Request, res: Response): Promise<Respon
     const results = await getRepository(FavPlanets).save(newFavouritePlanet);
     return res.json(results); 
 }
+// get favourite character
+export const getFavCharacter = async (req: Request, res: Response): Promise<Response> => {
+    const user = (req.user as ObjectLiteral).user; //traigo usuario 
+    if (!user) throw new Exception ("user not found") //si usuario no existe devolever msaje 
+    const results = await getRepository(FavCharacter).find({ where: { users:user }, relations:["character"]});
+    return res.json(results); 
+}
+
+// get favourite Planets
+export const getFavFavPlanets = async (req: Request, res: Response): Promise<Response> => {
+    const user = (req.user as ObjectLiteral).user; //traigo usuario 
+    if (!user) throw new Exception ("user not found") //si usuario no existe devolever msaje 
+    const results = await getRepository(FavPlanets).find({ where: { users:user }, relations:["planets"]});
+    return res.json(results); 
+}
+
+//detete favorite 
+export const deleteFavCharacter = async (req: Request, res: Response): Promise<Response> => {
+    const userID = (req.user as ObjectLiteral).user;
+    const favouriteCharacter = await getRepository(FavCharacter).findOne(
+         {
+            relations: ['character'],
+            where:{
+                users: userID,
+                character: req.params.id 
+            }
+         });
+         if(!favouriteCharacter){
+            return res.json({"messager":"El favourite not found"})
+        }else{
+            const result = await getRepository(FavCharacter).delete(favouriteCharacter);
+            return res.json(result);
+        }
+}
+//detete Planets 
+export const deleteFavPlanets = async (req: Request, res: Response): Promise<Response> => {
+    const userID = (req.user as ObjectLiteral).user;
+    const favouritePlanets = await getRepository(FavPlanets).findOne({relations: ['planets'],where:{users: userID,planets: req.params.id }});
+         if(!favouritePlanets){
+            return res.json({"messager":"El favourite not found"})
+        }else{
+            const result = await getRepository(FavPlanets).delete(favouritePlanets);
+            return res.json(result);
+        }
+}
+

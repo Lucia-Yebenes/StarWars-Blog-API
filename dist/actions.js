@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.addFavPlanets = exports.addFavCharacter = exports.createPlanets = exports.getOnePlanets = exports.getPlanets = exports.createCharacter = exports.getOneCharacter = exports.getCharacter = exports.getUsers = exports.createTokend = exports.createUser = void 0;
+exports.deleteFavPlanets = exports.deleteFavCharacter = exports.getFavFavPlanets = exports.getFavCharacter = exports.addFavPlanets = exports.addFavCharacter = exports.createPlanets = exports.getOnePlanets = exports.getPlanets = exports.createCharacter = exports.getOneCharacter = exports.getCharacter = exports.getUsers = exports.createTokend = exports.createUser = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var Users_1 = require("./entities/Users");
 var utils_1 = require("./utils");
@@ -301,3 +301,83 @@ var addFavPlanets = function (req, res) { return __awaiter(void 0, void 0, void 
     });
 }); };
 exports.addFavPlanets = addFavPlanets;
+// get favourite character
+var getFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = req.user.user;
+                if (!user)
+                    throw new utils_1.Exception("user not found"); //si usuario no existe devolever msaje 
+                return [4 /*yield*/, typeorm_1.getRepository(FavCharacter_1.FavCharacter).find({ where: { users: user }, relations: ["character"] })];
+            case 1:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.getFavCharacter = getFavCharacter;
+// get favourite Planets
+var getFavFavPlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, results;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = req.user.user;
+                if (!user)
+                    throw new utils_1.Exception("user not found"); //si usuario no existe devolever msaje 
+                return [4 /*yield*/, typeorm_1.getRepository(FavPlanets_1.FavPlanets).find({ where: { users: user }, relations: ["planets"] })];
+            case 1:
+                results = _a.sent();
+                return [2 /*return*/, res.json(results)];
+        }
+    });
+}); };
+exports.getFavFavPlanets = getFavFavPlanets;
+//detete favorite 
+var deleteFavCharacter = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userID, favouriteCharacter, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userID = req.user.user;
+                return [4 /*yield*/, typeorm_1.getRepository(FavCharacter_1.FavCharacter).findOne({
+                        relations: ['character'],
+                        where: {
+                            users: userID,
+                            character: req.params.id
+                        }
+                    })];
+            case 1:
+                favouriteCharacter = _a.sent();
+                if (!!favouriteCharacter) return [3 /*break*/, 2];
+                return [2 /*return*/, res.json({ "messager": "El favourite not found" })];
+            case 2: return [4 /*yield*/, typeorm_1.getRepository(FavCharacter_1.FavCharacter)["delete"](favouriteCharacter)];
+            case 3:
+                result = _a.sent();
+                return [2 /*return*/, res.json(result)];
+        }
+    });
+}); };
+exports.deleteFavCharacter = deleteFavCharacter;
+//detete Planets 
+var deleteFavPlanets = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userID, favouritePlanets, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userID = req.user.user;
+                return [4 /*yield*/, typeorm_1.getRepository(FavPlanets_1.FavPlanets).findOne({ relations: ['planets'], where: { users: userID, planets: req.params.id } })];
+            case 1:
+                favouritePlanets = _a.sent();
+                if (!!favouritePlanets) return [3 /*break*/, 2];
+                return [2 /*return*/, res.json({ "messager": "El favourite not found" })];
+            case 2: return [4 /*yield*/, typeorm_1.getRepository(FavPlanets_1.FavPlanets)["delete"](favouritePlanets)];
+            case 3:
+                result = _a.sent();
+                return [2 /*return*/, res.json(result)];
+        }
+    });
+}); };
+exports.deleteFavPlanets = deleteFavPlanets;

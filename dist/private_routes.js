@@ -52,4 +52,8 @@ var verifyToken = function (req, res, next) {
 router.get('/user', verifyToken, utils_1.safe(actions.getUsers));
 router.post('/user/favourite/character/:id', verifyToken, utils_1.safe(actions.addFavCharacter));
 router.post('/user/favourite/planet/:id', verifyToken, utils_1.safe(actions.addFavPlanets));
+router.get('/users/favorites/character', verifyToken, utils_1.safe(actions.getFavCharacter));
+router.get('/users/favorites/planets', verifyToken, utils_1.safe(actions.getFavFavPlanets));
+router["delete"]('/users/favorites/character/:id', verifyToken, utils_1.safe(actions.deleteFavCharacter));
+router["delete"]('/users/favorites/planets/:id', verifyToken, utils_1.safe(actions.deleteFavPlanets));
 exports["default"] = router;
